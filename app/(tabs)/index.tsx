@@ -3,12 +3,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { Link } from 'expo-router';
 
 export default function TabArtScreen() {
   return (
     <ScrollView style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#00f' }}>
       <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-        <TouchableOpacity style={{}}>
+        <TouchableOpacity>
           <IconSimpleLine
             name='options-vertical'
             size={30} color="#000"
@@ -29,12 +31,12 @@ export default function TabArtScreen() {
       <View>
         <Text style={styles.titleText}>Selecione a categoria</Text>
 
-        <ScrollView horizontal style={{marginVertical: 20}}>
+        <ScrollView horizontal style={{ marginVertical: 20 }}>
           <TouchableOpacity style={styles.btnOption}>
             <Text>Todas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.btnOption, styles.btnOptionSelected]}>
-            <Text style={{color: 'white'}}>Populares</Text>
+            <Text style={{ color: 'white' }}>Populares</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnOption}>
             <Text>Ofertas</Text>
@@ -58,6 +60,9 @@ export default function TabArtScreen() {
           <View style={{ alignSelf: 'center' }}>
             <Text>Desconto da semana</Text>
             <Text style={styles.textOff}>15% OFF</Text>
+            <Link href='/auth/login'>
+              <Text >Go to login screen!</Text>
+            </Link>
           </View>
           <Image
             source={require('@/assets/images/gato_oculos.png')}
