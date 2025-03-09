@@ -8,7 +8,7 @@ import { Link } from 'expo-router';
 
 export default function TabArtScreen() {
   return (
-    <ScrollView style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#00f' }}>
+    <ScrollView style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
       <View style={{ flexDirection: 'row', alignContent: 'center' }}>
         <TouchableOpacity>
           <IconSimpleLine
