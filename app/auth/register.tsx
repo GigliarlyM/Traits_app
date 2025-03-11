@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
 import React, { useState } from 'react';
+import { Link } from 'expo-router';
 
 export default function RegisterScreen() {
     return (
@@ -57,6 +58,10 @@ const FormRegister = () => {
                 <Image source={require('@/assets/images/ic-google.png')} style={{ width: 30, height: 30 }} />
                 <Text style={{ color: '#111' }}>Sign in With Google</Text>
             </TouchableOpacity>
+
+            <Link href='/auth/login'>
+                <Text style={{ color: '#ccc', textAlign: 'center' }}>Já tem uma conta? Faça Login</Text>
+            </Link>
         </View>
     )
 }
