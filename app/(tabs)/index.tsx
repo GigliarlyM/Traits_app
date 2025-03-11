@@ -103,8 +103,7 @@ interface ComponentsProps {
 const ArtView: React.FC<ComponentsProps> = ({ title = 'Sem titulo', image, saled, valueArt }) => {
   return (
     <View
-      style={saled ? styles.containerArtV : styles.containerArt}
-    >
+      style={saled ? styles.containerArtV : styles.containerArt}>
       <Image
         source={require('@/assets/images/gato_oculos.png')}
         style={{ width: 200, height: 200, alignSelf: 'center' }}
@@ -112,6 +111,10 @@ const ArtView: React.FC<ComponentsProps> = ({ title = 'Sem titulo', image, saled
 
       <Text style={{ color: "#00f" }}>MELHOR PRECO</Text>
       <Text style={styles.textArt}>{title}</Text>
+
+      <Link href='/(tabs)/description'>
+        <Text >Go to description!</Text>
+      </Link>
 
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity style={styles.btnSale}>

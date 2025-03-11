@@ -7,6 +7,7 @@ export default function TabLayout() {
     <Stack
       screenOptions={{ headerShown: false }}>
       <Stack.Screen name="login" />
+      <Stack.Screen name="register" />
     </Stack>
   );
 }
