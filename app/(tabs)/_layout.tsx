@@ -3,6 +3,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconFeather from 'react-native-vector-icons/Feather';
 
 export default function TabLayout() {
 
@@ -22,6 +23,13 @@ export default function TabLayout() {
         options={{
           title: 'Artes',
           tabBarIcon: ({ color }) => <Icon size={28} name="image-frame" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="buy"
+        options={{
+          title: 'Carrinho',
+          tabBarIcon: ({ color }) => <IconFeather size={28} name="shopping-cart" color={color} />,
         }}
       />
     </Tabs>
