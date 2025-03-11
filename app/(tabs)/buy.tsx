@@ -7,7 +7,7 @@ import { Link } from 'expo-router';
 
 export default function TabBuyScreen() {
   return (
-    <View style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
+    <ScrollView style={{ paddingTop: 50, backgroundColor: '#1a4a90' }}>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity>
           <Icon name='arrow-undo-circle' color={'#fff'} size={50} style={{ marginVertical: 'auto' }} />
@@ -17,11 +17,13 @@ export default function TabBuyScreen() {
           fontSize: 32,
           color: '#fff',
           fontWeight: 'bold'
-          }}>Carrinho</Text>
+        }}>Carrinho</Text>
       </View>
 
-      <ScrollView style={{ height: 450 }}>
-        <Text style={[styles.text, {fontSize: 28}]}>Itens</Text>
+      <ScrollView style={{ paddingHorizontal: 18 }}>
+        <Text style={[styles.text, { fontSize: 28 }]}>Itens</Text>
+        <CardArt />
+        <CardArt />
         <CardArt />
         <CardArt />
         <CardArt />
@@ -47,7 +49,7 @@ export default function TabBuyScreen() {
           <Text style={{ color: 'white' }}>Finalizar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -98,10 +100,8 @@ const styles = StyleSheet.create({
   },
   cartBuy: {
     backgroundColor: '#ccc',
-    position: 'fixed',
-    bottom: 47,
-    left: 0,
-    width: 400,
+    marginBottom: 50,
+    width: '100%',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderTopStartRadius: 10,
