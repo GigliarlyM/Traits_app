@@ -54,6 +54,10 @@ const FormLogin = () => {
         <Image source={require('@/assets/images/ic-google.png')} style={{width: 30, height: 30 }}/>
         <Text style={{ color: '#111' }}>Sign in With Google</Text>
       </TouchableOpacity>
+
+      <Link href='/auth/register'>
+        <Text style={{ color: '#ccc', textAlign: 'center' }}>Novo Usuário? Registre-se</Text>
+      </Link>
     </View>
   )
 }

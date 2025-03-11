@@ -13,6 +13,9 @@ export default function NotFoundScreen() {
         <Link href='/auth/login' style={styles.link}>
           <Text >Go to login screen!</Text>
         </Link>
+        <Link href='/auth/register' style={styles.link}>
+          <Text >Go to register screen!</Text>
+        </Link>
       </View>
     </>
   );
