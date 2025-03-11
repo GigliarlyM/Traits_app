@@ -1,6 +1,5 @@
 import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -21,8 +20,8 @@ export default function TabBuyScreen() {
           }}>Carrinho</Text>
       </View>
 
-      <ScrollView style={{ height: 460 }}>
-        <Text style={styles.text}>Itens</Text>
+      <ScrollView style={{ height: 450 }}>
+        <Text style={[styles.text, {fontSize: 28}]}>Itens</Text>
         <CardArt />
         <CardArt />
         <CardArt />
@@ -30,18 +29,18 @@ export default function TabBuyScreen() {
 
       <View style={styles.cartBuy}>
         <View style={styles.cartBuyRow}>
-          <Text>Subtotal</Text>
-          <Text style={styles.cartBuyText}>R$ 30,00</Text>
+          <Text style={styles.cartBuyText}>Subtotal</Text>
+          <Text style={[styles.cartBuyTextRight, styles.cartBuyText]}>R$ 30,00</Text>
         </View>
 
         <View style={styles.cartBuyRow}>
-          <Text>Delivery</Text>
-          <Text style={styles.cartBuyText}>R$ 25,00</Text>
+          <Text style={styles.cartBuyText}>Delivery</Text>
+          <Text style={[styles.cartBuyTextRight, styles.cartBuyText]}>R$ 25,00</Text>
         </View>
 
         <View style={styles.cartBuyRow}>
-          <Text>Total Cost</Text>
-          <Text style={styles.cartBuyText}>R$ 55,00</Text>
+          <Text style={styles.cartBuyTextTotal}>Total Cost</Text>
+          <Text style={[styles.cartBuyTextRight, styles.cartBuyTextTotal]}>R$ 55,00</Text>
         </View>
 
         <TouchableOpacity style={styles.btnFinal}>
@@ -82,10 +81,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 5
   },
+  cartBuyTextTotal: {
+    color: "#00f",
+    fontWeight: 'bold',
+    fontSize: 16
+  },
   cartBuyText: {
+    color: "#777",
+    fontSize: 14,
+    fontWeight: 'bold'
+  },
+  cartBuyTextRight: {
     textAlign: 'right',
     position: 'absolute',
-    right: 0
+    right: 0,
   },
   cartBuy: {
     backgroundColor: '#ccc',
@@ -94,10 +103,12 @@ const styles = StyleSheet.create({
     left: 0,
     width: 400,
     paddingHorizontal: 10,
-    paddingVertical: 5
+    paddingVertical: 5,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
   },
   containerArt: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#999',
     paddingVertical: 20,
     paddingHorizontal: 10,
     borderRadius: 20,
