@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Link } from 'expo-router';
 
 export default function TabBuyScreen() {
+  const total = getTotal()
+
   return (
     <ScrollView style={{ paddingTop: 50, backgroundColor: '#1a4a90' }}>
       <View style={{ flexDirection: 'row' }}>
@@ -22,17 +24,13 @@ export default function TabBuyScreen() {
 
       <ScrollView style={{ paddingHorizontal: 18 }}>
         <Text style={[styles.text, { fontSize: 28 }]}>Itens</Text>
-        <CardArt />
-        <CardArt />
-        <CardArt />
-        <CardArt />
-        <CardArt />
+        {convertListToView()}
       </ScrollView>
 
       <View style={styles.cartBuy}>
         <View style={styles.cartBuyRow}>
           <Text style={styles.cartBuyText}>Subtotal</Text>
-          <Text style={[styles.cartBuyTextRight, styles.cartBuyText]}>R$ 30,00</Text>
+          <Text style={[styles.cartBuyTextRight, styles.cartBuyText]}>R$ {total}</Text>
         </View>
 
         <View style={styles.cartBuyRow}>
@@ -42,7 +40,7 @@ export default function TabBuyScreen() {
 
         <View style={styles.cartBuyRow}>
           <Text style={styles.cartBuyTextTotal}>Total Cost</Text>
-          <Text style={[styles.cartBuyTextRight, styles.cartBuyTextTotal]}>R$ 55,00</Text>
+          <Text style={[styles.cartBuyTextRight, styles.cartBuyTextTotal]}>R$ {total + 25}</Text>
         </View>
 
         <TouchableOpacity style={styles.btnFinal}>
@@ -53,7 +51,39 @@ export default function TabBuyScreen() {
   );
 }
 
-const CardArt = () => {
+const getArts = (quantidade = 5) => {
+  // Simulando a chamada à API
+  return Array(quantidade).fill(null).map((_, index) => ({
+    title: `Gato de oculos ${index + 1}`,
+    image: '@/assets/images/gato_oculos.png',
+    value: 30, // Valor de compra do artigo, simulado
+  }));
+}
+
+const getTotal = () => {
+  const arts = getArts()
+
+  const total = arts.map((art) => art.value).reduce((value1, value2) => value1 + value2)
+  console.log(total)
+
+  return total
+}
+
+const convertListToView = () => {
+  const arts = getArts();
+
+  return arts.map((art) => (
+    <CardArt title={art.title} image={art.image} valueArt={art.value} />
+  ));
+}
+
+interface CardArtAttributes {
+  title: string;
+  image: string;
+  valueArt: number;
+}
+
+const CardArt: React.FC<CardArtAttributes> = ({ title, image, valueArt }) => {
   return (
     <View style={styles.containerArt}>
       <View style={styles.cartArt}>
@@ -63,8 +93,8 @@ const CardArt = () => {
         />
 
         <View style={{ alignItems: 'center', width: 180 }}>
-          <Text>Gato de oculos</Text>
-          <Text style={{ marginVertical: 'auto', fontSize: 32 }}>R$ 30,00</Text>
+          <Text>{title}</Text>
+          <Text style={{ marginVertical: 'auto', fontSize: 32 }}>R$ {valueArt}</Text>
         </View>
       </View>
     </View>
