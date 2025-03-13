@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import IconMatiral from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconIon from 'react-native-vector-icons/Ionicons';
@@ -6,14 +6,35 @@ import IconIon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Link } from 'expo-router';
+import { ComponetArtProp } from './ArtView';
 
-export default function TabDescriptionScreen() {
+interface ComponentPopUpProps {
+  art: ComponetArtProp;
+  onPress?: () => void;
+  onExit: () => void;
+}
+{/* Componente Modal para exibir o pop-up */ }
+{/* <Modal visible={modalVisivel} animationType="slide">
+  <View style={stylesModal.modalContainer}>
+    {arteSelecionada && (
+      <View style={stylesModal.modalContent}>
+        <Text style={stylesModal.modalTitulo}>{arteSelecionada.title}</Text>
+        <Text style={stylesModal.modalPreco}>
+          R$ {arteSelecionada.valueArt.toFixed(2)}
+        </Text>
+        <Button title="Fechar" onPress={fecharModal} />
+      </View>
+    )}
+  </View>
+</Modal> */}
+
+export const Description: React.FC<ComponentPopUpProps> = ({ art, onPress, onExit }) => {
   return (
-    <ScrollView style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
+    <View style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
       <View>
 
         <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onExit}>
             <IconIon name='arrow-undo-circle' color={'#fff'} size={65} style={{ alignSelf: 'center', marginVertical: 'auto' }} />
           </TouchableOpacity>
 
@@ -27,9 +48,9 @@ export default function TabDescriptionScreen() {
           </TouchableOpacity>
         </View>
 
-        <Text style={[styles.text, styles.textFocus]}>Titulo da Arte</Text>
+        <Text style={[styles.text, styles.textFocus]}>{art.title}</Text>
         <Text style={styles.text}>Genero ou forma de pintura</Text>
-        <Text style={[styles.text, styles.textFocus]}>R$ 30,00</Text>
+        <Text style={[styles.text, styles.textFocus]}>{art.valueArt}</Text>
 
         <Image
           source={require('@/assets/images/gato_oculos.png')}
@@ -55,7 +76,7 @@ export default function TabDescriptionScreen() {
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 

@@ -1,12 +1,53 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Link } from 'expo-router';
+import { ArtView, ComponetArtProp } from '@/components/ArtView';
+import { Description } from '@/components/description';
 
 export default function TabArtScreen() {
+  const [modalVisivel, setModelVisivel] = useState(false)
+  const [arteSelecionada, setArteSelecionada] = useState<ComponetArtProp | null>(null)
+
+  const abrirModal = (arteSelt: ComponetArtProp) => {
+    setArteSelecionada(arteSelt)
+    setModelVisivel(true)
+  }
+
+  const fecharModal = () => {
+    setModelVisivel(false)
+    setArteSelecionada(null)
+  }
+
+  const searchArts = (quantidade = 5) => {
+    // Simulando a chamada à API
+    return Array(quantidade).fill(null).map((_, index) => ({
+      id: index + 1,
+      title: `Art ${index + 1}`,
+      image: '@/assets/images/gato_com_oculos_perfil.avif',
+      saled: index % 2 === 0,
+      valueArt: index * 10 + 100, // Valor de compra do artigo, simulado
+    }));
+  }
+
+  const arts = searchArts();
+
+  const convertListToView = () => {
+    return arts.map((art) => (
+      <ArtView
+        key={art.id}
+        title={art.title}
+        image={art.image}
+        saled={art.saled}
+        valueArt={art.valueArt}
+        onPress={() => abrirModal(art)}
+      />
+    ));
+  }
+
   return (
     <ScrollView style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
       <View style={{ flexDirection: 'row', alignContent: 'center' }}>
@@ -71,58 +112,11 @@ export default function TabArtScreen() {
         </View>
       </View>
 
+      <Modal visible={modalVisivel} animationType="slide">
+        <Description art={arteSelecionada!} onExit={fecharModal} />
+      </Modal>
+
     </ScrollView>
-  );
-}
-
-const searchArts = (quantidade = 5) => {
-  // Simulando a chamada à API
-  return Array(quantidade).fill(null).map((_, index) => ({
-    id: index + 1,
-    title: `Art ${index + 1}`,
-    image: '@/assets/images/gato_com_oculos_perfil.avif',
-    saled: index % 2 === 0,
-    value: index * 10 + 100, // Valor de compra do artigo, simulado
-  }));
-}
-
-const convertListToView = () => {
-  const arts = searchArts();
-  return arts.map((art) => (
-    <ArtView key={art.id} title={art.title} image={art.image} saled={art.saled} valueArt={art.value} />
-  ));
-}
-
-interface ComponentsProps {
-  title?: string;
-  image?: string;
-  saled?: boolean;
-  valueArt?: number;
-}
-
-const ArtView: React.FC<ComponentsProps> = ({ title = 'Sem titulo', image, saled, valueArt }) => {
-  return (
-    <View
-      style={saled ? styles.containerArtV : styles.containerArt}>
-      <Image
-        source={require('@/assets/images/gato_oculos.png')}
-        style={{ width: 200, height: 200, alignSelf: 'center' }}
-      />
-
-      <Text style={{ color: "#00f" }}>MELHOR PRECO</Text>
-      <Text style={styles.textArt}>{title}</Text>
-
-      <Link href='/(tabs)/description'>
-        <Text >Go to description!</Text>
-      </Link>
-
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity style={styles.btnSale}>
-          <Text style={{ color: "#fff" }}>Comprar</Text>
-        </TouchableOpacity>
-        <Text style={styles.textArt}>{saled ? "esta vendido" : `R$ ${valueArt}`}</Text>
-      </View>
-    </View>
   );
 }
 
@@ -190,32 +184,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
     marginRight: 10
-  },
-  containerArtV: {
-    marginVertical: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#bbb',
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
-  },
-  containerArt: {
-    marginVertical: 5,
-    marginHorizontal: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#eee',
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
-  },
-  textArt: {
-    fontSize: 15,
-    color: '#000',
   }
 });

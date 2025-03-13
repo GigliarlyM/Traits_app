@@ -70,7 +70,7 @@ const getTotal = () => {
 }
 
 const convertListToView = () => {
-  const arts = getArts();
+  const arts = getArts(6);
 
   return arts.map((art) => (
     <CardArt title={art.title} image={art.image} valueArt={art.value} />
