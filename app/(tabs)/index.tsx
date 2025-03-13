@@ -7,10 +7,19 @@ import { useNavigation } from '@react-navigation/native';
 import { Link } from 'expo-router';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
 import { Description } from '@/components/description';
+import { useCart } from '@/components/CartContext';
 
 export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
   const [arteSelecionada, setArteSelecionada] = useState<ComponetArtProp | null>(null)
+  const { addToCart } = useCart()
+
+  const handleAddToCart = () => {
+    if (arteSelecionada) {
+      addToCart(arteSelecionada)
+      fecharModal()
+    }
+  }
 
   const abrirModal = (arteSelt: ComponetArtProp) => {
     setArteSelecionada(arteSelt)
@@ -113,7 +122,7 @@ export default function TabArtScreen() {
       </View>
 
       <Modal visible={modalVisivel} animationType="slide">
-        <Description art={arteSelecionada!} onExit={fecharModal} />
+        <Description art={arteSelecionada!} onExit={fecharModal} onAddToCart={handleAddToCart} />
       </Modal>
 
     </ScrollView>

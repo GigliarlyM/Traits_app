@@ -4,9 +4,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Link } from 'expo-router';
+import { useCart } from '@/components/CartContext';
+import { ComponetArtProp } from '@/components/ArtView';
 
 export default function TabBuyScreen() {
-  const total = getTotal()
+  const { cart, removeFromCart } = useCart()
+  const total = getTotal(cart)
 
   return (
     <ScrollView style={{ paddingTop: 50, backgroundColor: '#1a4a90' }}>
@@ -24,7 +27,7 @@ export default function TabBuyScreen() {
 
       <ScrollView style={{ paddingHorizontal: 18 }}>
         <Text style={[styles.text, { fontSize: 28 }]}>Itens</Text>
-        {convertListToView()}
+        {convertListToView(cart, removeFromCart)}
       </ScrollView>
 
       <View style={styles.cartBuy}>
@@ -51,41 +54,23 @@ export default function TabBuyScreen() {
   );
 }
 
-const getArts = (quantidade = 5) => {
-  // Simulando a chamada à API
-  return Array(quantidade).fill(null).map((_, index) => ({
-    title: `Gato de oculos ${index + 1}`,
-    image: '@/assets/images/gato_oculos.png',
-    value: 30, // Valor de compra do artigo, simulado
-  }));
-}
-
-const getTotal = () => {
-  const arts = getArts()
-
-  const total = arts.map((art) => art.value).reduce((value1, value2) => value1 + value2)
-  console.log(total)
-
-  return total
-}
-
-const convertListToView = () => {
-  const arts = getArts(6);
+const convertListToView = (arts: ComponetArtProp[], removeArt: (art: ComponetArtProp) => void) => {
 
   return arts.map((art) => (
-    <CardArt title={art.title} image={art.image} valueArt={art.value} />
+    <CardArt title={art.title} image={art.image} valueArt={art.valueArt} removeArt={removeArt} />
   ));
 }
 
-interface CardArtAttributes {
-  title: string;
-  image: string;
-  valueArt: number;
-}
+const CardArt: React.FC<ComponetArtProp & {removeArt: (art: ComponetArtProp) => void}> = (props) => {
+  const {title, valueArt, removeArt} = props
 
-const CardArt: React.FC<CardArtAttributes> = ({ title, image, valueArt }) => {
   return (
     <View style={styles.containerArt}>
+
+      <TouchableOpacity style={styles.btnTrash} onPress={() => removeArt({title, valueArt})}>
+        <Icon name='trash-outline' color={'#000'} size={30} />
+      </TouchableOpacity>
+
       <View style={styles.cartArt}>
         <Image
           source={require('@/assets/images/gato_oculos.png')}
@@ -101,7 +86,23 @@ const CardArt: React.FC<CardArtAttributes> = ({ title, image, valueArt }) => {
   );
 }
 
+const getTotal = (arts: ComponetArtProp[]) => {
+  let total = 0;
+
+  if (arts.length > 0) {
+    total = arts.map((art) => art.valueArt).reduce((value1, value2=0) => value1! + value2)!
+    console.log(total)
+  }
+
+  return total
+}
+
 const styles = StyleSheet.create({
+  btnTrash: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
   btnFinal: {
     backgroundColor: "#00f",
     borderRadius: 20,

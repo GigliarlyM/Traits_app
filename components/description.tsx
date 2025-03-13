@@ -10,7 +10,7 @@ import { ComponetArtProp } from './ArtView';
 
 interface ComponentPopUpProps {
   art: ComponetArtProp;
-  onPress?: () => void;
+  onAddToCart?: () => void;
   onExit: () => void;
 }
 {/* Componente Modal para exibir o pop-up */ }
@@ -28,7 +28,7 @@ interface ComponentPopUpProps {
   </View>
 </Modal> */}
 
-export const Description: React.FC<ComponentPopUpProps> = ({ art, onPress, onExit }) => {
+export const Description: React.FC<ComponentPopUpProps> = ({ art, onAddToCart, onExit }) => {
   return (
     <View style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
       <View>
@@ -70,7 +70,7 @@ export const Description: React.FC<ComponentPopUpProps> = ({ art, onPress, onExi
         </View>
 
         <View>
-          <TouchableOpacity style={styles.btnAdd}>
+          <TouchableOpacity style={styles.btnAdd} onPress={onAddToCart}>
             <IconMatiral name='shopping-outline' size={45} color={'white'} />
             <Text style={[styles.text, styles.textBtn]}>Adicionar ao carrinho</Text>
           </TouchableOpacity>
