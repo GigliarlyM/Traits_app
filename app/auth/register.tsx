@@ -2,9 +2,9 @@ import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, TextInput 
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { cpf } from 'cpf-cnpj-validator'
 
-
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 export default function RegisterScreen() {
     return (
@@ -22,12 +22,13 @@ export default function RegisterScreen() {
 
 function handleSignIn(data: any) {
     console.log(data)
+    useRouter().replace('/auth/login')
 }
 
 const schema = yup.object({
     usuario: yup.string().required("Digite seu nome"),
     email: yup.string().email("Email Inválido").required("Digite seu email"),
-    cpf: yup.string().required("Digite seu CPF").matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido (use o formato 000.000.000-00)"),
+    cpf: yup.string().test('cpf-valido', 'CPF Invalido', (value) => cpf.isValid(value!)).required('CPF eh obrigatorio'),
     senha: yup.string().min(6, "A senha deve ter pelo menos 6 dígitos"),
     senhaRepetida: yup.string().oneOf([yup.ref("senha")], "As senhas devem ser iguais").required("Repita sua senha")
 })
@@ -57,7 +58,7 @@ const FormRegister = () => {
                         style={[styles.input, {
                             borderWidth: errors.usuario && 1,
                             borderColor: errors.usuario && '#ff375b'
-                        }]} 
+                        }]}
                         onBlur={onBlur}
                         value={value}
                         onChangeText={onChange} />
@@ -154,7 +155,7 @@ const FormRegister = () => {
             <Link href='/auth/login'>
                 <Text style={{ color: '#ccc', textAlign: 'center' }}>Já tem uma conta? Faça Login</Text>
             </Link>
-            
+
         </View>
     )
 }
