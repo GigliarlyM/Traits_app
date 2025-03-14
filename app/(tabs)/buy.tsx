@@ -1,13 +1,24 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '@/components/CartContext';
 import { ComponetArtProp } from '@/components/ArtView';
+import FinishView from '@/components/Finish';
 
 export default function TabBuyScreen() {
-  const { cart, removeFromCart } = useCart()
+  const { cart, removeFromCart, removeAllFromCart } = useCart()
   const total = getTotal(cart)
+  const [modalVisivel, setModelVisivel] = useState(false)
+
+  const abrirModal = () => {
+    removeAllFromCart()
+    setModelVisivel(true)
+  }
+
+  const fecharModal = () => {
+    setModelVisivel(false)
+  }
 
   return (
     <ScrollView style={{ backgroundColor: '#1a4a90' }}>
@@ -33,10 +44,23 @@ export default function TabBuyScreen() {
           <Text style={[styles.cartBuyTextRight, styles.cartBuyTextTotal]}>R$ {total + 25}</Text>
         </View>
 
-        <TouchableOpacity style={styles.btnFinal}>
-          <Text style={{ color: 'white' }}>Finalizar</Text>
-        </TouchableOpacity>
+        {cart.length === 0 ?
+          <TouchableOpacity
+            style={[styles.btnFinal, { backgroundColor: "#000" }]}
+            onPress={() => abrirModal()} disabled
+          >
+            <Text style={{ color: 'white' }}>Finalizar 😏</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity style={styles.btnFinal} onPress={() => abrirModal()} >
+            <Text style={{ color: 'white' }}>Finalizar 😏</Text>
+          </TouchableOpacity>
+        }
       </View>
+
+      <Modal visible={modalVisivel} animationType="slide">
+        <FinishView onExit={fecharModal} />
+      </Modal>
     </ScrollView>
   );
 }
@@ -48,13 +72,13 @@ const convertListToView = (arts: ComponetArtProp[], removeArt: (art: ComponetArt
   ));
 }
 
-const CardArt: React.FC<ComponetArtProp & {removeArt: (art: ComponetArtProp) => void}> = (props) => {
-  const {title, valueArt, removeArt} = props
+const CardArt: React.FC<ComponetArtProp & { removeArt: (art: ComponetArtProp) => void }> = (props) => {
+  const { title, valueArt, removeArt } = props
 
   return (
     <View style={styles.containerArt}>
 
-      <TouchableOpacity style={styles.btnTrash} onPress={() => removeArt({title, valueArt})}>
+      <TouchableOpacity style={styles.btnTrash} onPress={() => removeArt({ title, valueArt })}>
         <Icon name='trash-outline' color={'#000'} size={30} />
       </TouchableOpacity>
 
@@ -77,7 +101,7 @@ const getTotal = (arts: ComponetArtProp[]) => {
   let total = 0;
 
   if (arts.length > 0) {
-    total = arts.map((art) => art.valueArt).reduce((value1, value2=0) => value1! + value2)!
+    total = arts.map((art) => art.valueArt).reduce((value1, value2 = 0) => value1! + value2)!
     console.log(total)
   }
 

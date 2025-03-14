@@ -13,20 +13,6 @@ interface ComponentPopUpProps {
   onAddToCart?: () => void;
   onExit: () => void;
 }
-{/* Componente Modal para exibir o pop-up */ }
-{/* <Modal visible={modalVisivel} animationType="slide">
-  <View style={stylesModal.modalContainer}>
-    {arteSelecionada && (
-      <View style={stylesModal.modalContent}>
-        <Text style={stylesModal.modalTitulo}>{arteSelecionada.title}</Text>
-        <Text style={stylesModal.modalPreco}>
-          R$ {arteSelecionada.valueArt.toFixed(2)}
-        </Text>
-        <Button title="Fechar" onPress={fecharModal} />
-      </View>
-    )}
-  </View>
-</Modal> */}
 
 export const Description: React.FC<ComponentPopUpProps> = ({ art, onAddToCart, onExit }) => {
   return (

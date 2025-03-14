@@ -5,6 +5,7 @@ interface CartContextProps {
   cart: ComponetArtProp[];
   addToCart: (art: ComponetArtProp) => void;
   removeFromCart: (art: ComponetArtProp) => void;
+  removeAllFromCart: () => void;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
@@ -20,7 +21,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCart(cart.filter((item) => item.title !== art.title));
   };
 
-  const value = { cart, addToCart, removeFromCart };
+  const removeAllFromCart = () => {
+    setCart([])
+  }
+
+  const value = { cart, addToCart, removeFromCart, removeAllFromCart };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

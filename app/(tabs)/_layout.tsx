@@ -25,7 +25,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              title: 'Artes',
+              title: 'Artes 😀',
               tabBarIcon: ({ color }) => <Icon size={28} name="image-frame" color={color} />,
               headerLeft: () => <MenuHeader />,
               headerStyle: { backgroundColor: '#1a4a90' },
@@ -35,7 +35,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="buy"
             options={{
-              title: 'Carrinho',
+              title: 'Carrinho 🤔',
               tabBarIcon: ({ color }) => <IconFeather size={28} name="shopping-cart" color={color} />,
               headerLeft: () => <MenuHeader />,
               headerStyle: { backgroundColor: '#1a4a90' },

@@ -3,7 +3,7 @@ import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } fr
 import React, { useState } from 'react';
 import { Link } from 'expo-router';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
-import { Description } from '@/components/description';
+import { Description } from '@/components/Description';
 import { useCart } from '@/components/CartContext';
 
 export default function TabArtScreen() {

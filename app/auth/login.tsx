@@ -8,7 +8,7 @@ export default function LoginScreen() {
   return (
     <ScrollView style={{ paddingTop: 40, backgroundColor: '#1a4a90', paddingHorizontal: 20 }}>
 
-      <View style={{marginVertical: 70}}>
+      <View style={{ marginVertical: 70 }}>
         <Text style={[styles.text, { fontSize: 32, textAlign: 'center' }]}>Seja Bem-Vindo!</Text>
         <Text style={[styles.text, { textAlign: 'center', color: '#bbb' }]}>Preencha seus dados ou continue com Midias sociais</Text>
       </View>
@@ -40,16 +40,14 @@ const FormLogin = () => {
         value={password}
         onChangeText={setPassword} />
 
-      <Link href='/auth/login'>
-        <Text style={{ color: '#ccc', textAlign: 'right' }}>Esqueci a senha!</Text>
-      </Link>
+      <Text style={{ color: '#ccc', textAlign: 'right' }}>Esqueci a senha!</Text>
 
       <TouchableOpacity style={styles.btnLogin} onPress={() => route.replace('/(tabs)')}>
         <Text style={{ color: '#fff', textAlign: 'center' }}>Login</Text>
       </TouchableOpacity>
-      
-      <TouchableOpacity style={[styles.btnLogin, {backgroundColor: '#ccc', flexDirection: 'row'}]}>
-        <Image source={require('@/assets/images/ic-google.png')} style={{width: 30, height: 30 }}/>
+
+      <TouchableOpacity style={[styles.btnLogin, { backgroundColor: '#ccc', flexDirection: 'row' }]}>
+        <Image source={require('@/assets/images/ic-google.png')} style={{ width: 30, height: 30 }} />
         <Text style={{ color: '#111' }}>Sign in With Google</Text>
       </TouchableOpacity>
 
