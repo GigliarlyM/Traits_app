@@ -66,7 +66,7 @@ export default function TabBuyScreen() {
 }
 
 const convertListToView = (arts: ComponetArtProp[], removeArt: (art: ComponetArtProp) => void) => {
-
+  // ocorre um erro aqui pois o react native, para a funcao de map, necessita de id em cada objeto
   return arts.map((art) => (
     <CardArt title={art.title} image={art.image} valueArt={art.valueArt} removeArt={removeArt} />
   ));
