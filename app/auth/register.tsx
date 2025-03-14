@@ -63,7 +63,7 @@ const FormRegister = () => {
                         onChangeText={onChange} />
                 )}
             />
-            {errors.usuario && <text style={styles.labelError}>{errors.usuario?.message}</text>}
+            {errors.usuario && <Text style={styles.labelError}>{errors.usuario?.message}</Text>}
 
 
             <Text style={styles.text}>Email:</Text>
@@ -82,7 +82,7 @@ const FormRegister = () => {
                         onChangeText={onChange} />
                 )}
             />
-            {errors.email && <text style={styles.labelError}>{errors.email?.message}</text>}
+            {errors.email && <Text style={styles.labelError}>{errors.email?.message}</Text>}
 
 
             <Text style={styles.text}>Cpf:</Text>
@@ -101,7 +101,7 @@ const FormRegister = () => {
                         onChangeText={onChange} />
                 )}
             />
-            {errors.cpf && <text style={styles.labelError}>{errors.cpf?.message}</text>}
+            {errors.cpf && <Text style={styles.labelError}>{errors.cpf?.message}</Text>}
 
 
             <Text style={styles.text}>Senha:</Text>
@@ -121,7 +121,7 @@ const FormRegister = () => {
                         secureTextEntry={true} />
                 )}
             />
-            {errors.senha && <text style={styles.labelError}>{errors.senha?.message}</text>}
+            {errors.senha && <Text style={styles.labelError}>{errors.senha?.message}</Text>}
 
             <Text style={styles.text}>Repita sua senha:</Text>
             <Controller
@@ -140,7 +140,7 @@ const FormRegister = () => {
                         secureTextEntry={true} />
                 )}
             />
-            {errors.senhaRepetida && <text style={styles.labelError}>{errors.senhaRepetida?.message}</text>}
+            {errors.senhaRepetida && <Text style={styles.labelError}>{errors.senhaRepetida?.message}</Text>}
 
             <TouchableOpacity style={styles.btnLogin}>
                 <Text style={{ color: '#fff', textAlign: 'center' }} onPress={handleSubmit(handleSignIn)}>Registrar</Text>
