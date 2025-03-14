@@ -1,9 +1,6 @@
 import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { Link } from 'expo-router';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
 import { Description } from '@/components/description';
@@ -58,25 +55,7 @@ export default function TabArtScreen() {
   }
 
   return (
-    <ScrollView style={{ paddingTop: 50, paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
-      <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-        <TouchableOpacity>
-          <IconSimpleLine
-            name='options-vertical'
-            size={30} color="#000"
-            style={{ marginVertical: 'auto', marginHorizontal: 8 }}
-          />
-        </TouchableOpacity>
-
-        <Text style={styles.titleScreen}>ARTES</Text>
-
-        <TouchableOpacity style={styles.btnWallet}>
-          <Icon
-            name='wallet-outline'
-            size={30} color="#000"
-            style={{ marginVertical: 'auto', marginHorizontal: 8 }} />
-        </TouchableOpacity>
-      </View>
+    <ScrollView style={{ paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
 
       <View>
         <Text style={styles.titleText}>Selecione a categoria</Text>
@@ -110,9 +89,6 @@ export default function TabArtScreen() {
           <View style={{ alignSelf: 'center' }}>
             <Text>Desconto da semana</Text>
             <Text style={styles.textOff}>15% OFF</Text>
-            <Link href='/auth/login'>
-              <Text >Go to login screen!</Text>
-            </Link>
           </View>
           <Image
             source={require('@/assets/images/gato_oculos.png')}

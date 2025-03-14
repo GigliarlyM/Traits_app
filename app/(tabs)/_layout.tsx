@@ -5,36 +5,45 @@ import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import { CartProvider } from '@/components/CartContext';
+import MenuHeader from '@/components/MenuHeader';
+import { PaperProvider } from 'react-native-paper';
 
 export default function TabLayout() {
 
   return (
     <CartProvider>
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: Platform.select({
-            ios: {
-              position: 'absolute',
-            },
-            default: {},
-          }),
-        }}>
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: 'Artes',
-            tabBarIcon: ({ color }) => <Icon size={28} name="image-frame" color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="buy"
-          options={{
-            title: 'Carrinho',
-            tabBarIcon: ({ color }) => <IconFeather size={28} name="shopping-cart" color={color} />,
-          }}
-        />
-      </Tabs>
+      <PaperProvider>
+        <Tabs
+          screenOptions={{
+            tabBarStyle: Platform.select({
+              ios: {
+                position: 'absolute',
+              },
+              default: {},
+            }),
+          }}>
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: 'Artes',
+              tabBarIcon: ({ color }) => <Icon size={28} name="image-frame" color={color} />,
+              headerLeft: () => <MenuHeader />,
+              headerStyle: { backgroundColor: '#1a4a90' },
+              headerTitleStyle: { color: '#fff', marginLeft: 50, fontSize: 32, fontWeight: 'bold' }
+            }}
+          />
+          <Tabs.Screen
+            name="buy"
+            options={{
+              title: 'Carrinho',
+              tabBarIcon: ({ color }) => <IconFeather size={28} name="shopping-cart" color={color} />,
+              headerLeft: () => <MenuHeader />,
+              headerStyle: { backgroundColor: '#1a4a90' },
+              headerTitleStyle: { color: '#fff', marginLeft: 50, fontSize: 32, fontWeight: 'bold' }
+            }}
+          />
+        </Tabs>
+      </PaperProvider>
     </CartProvider>
   );
 }

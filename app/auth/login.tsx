@@ -1,16 +1,12 @@
 import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
 import React, { useState } from 'react';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 export default function LoginScreen() {
   return (
     <ScrollView style={{ paddingTop: 40, backgroundColor: '#1a4a90', paddingHorizontal: 20 }}>
-      <TouchableOpacity style={styles.btnBack}>
-        <Icon name='arrow-undo-circle' color={'#fff'} size={50} style={{alignSelf: 'center', marginVertical: 'auto'}} />
-      </TouchableOpacity>
 
       <View style={{marginVertical: 70}}>
         <Text style={[styles.text, { fontSize: 32, textAlign: 'center' }]}>Seja Bem-Vindo!</Text>
@@ -25,6 +21,8 @@ export default function LoginScreen() {
 const FormLogin = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const route = useRouter()
+
   return (
     <View >
       <Text style={styles.text}>Email:</Text>
@@ -46,7 +44,7 @@ const FormLogin = () => {
         <Text style={{ color: '#ccc', textAlign: 'right' }}>Esqueci a senha!</Text>
       </Link>
 
-      <TouchableOpacity style={styles.btnLogin}>
+      <TouchableOpacity style={styles.btnLogin} onPress={() => route.replace('/(tabs)')}>
         <Text style={{ color: '#fff', textAlign: 'center' }}>Login</Text>
       </TouchableOpacity>
       

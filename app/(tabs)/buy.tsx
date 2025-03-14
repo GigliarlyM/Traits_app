@@ -2,8 +2,6 @@ import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity } from 'rea
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Link } from 'expo-router';
 import { useCart } from '@/components/CartContext';
 import { ComponetArtProp } from '@/components/ArtView';
 
@@ -12,18 +10,7 @@ export default function TabBuyScreen() {
   const total = getTotal(cart)
 
   return (
-    <ScrollView style={{ paddingTop: 50, backgroundColor: '#1a4a90' }}>
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity>
-          <Icon name='arrow-undo-circle' color={'#fff'} size={50} style={{ marginVertical: 'auto' }} />
-        </TouchableOpacity>
-        <Text style={{
-          marginHorizontal: 'auto',
-          fontSize: 32,
-          color: '#fff',
-          fontWeight: 'bold'
-        }}>Carrinho</Text>
-      </View>
+    <ScrollView style={{ backgroundColor: '#1a4a90' }}>
 
       <ScrollView style={{ paddingHorizontal: 18 }}>
         <Text style={[styles.text, { fontSize: 28 }]}>Itens</Text>
