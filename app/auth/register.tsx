@@ -3,17 +3,12 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
 import { Link } from 'expo-router';
 
 export default function RegisterScreen() {
     return (
         <ScrollView style={{ paddingTop: 40, backgroundColor: '#1a4a90', paddingHorizontal: 20 }}>
-            <TouchableOpacity style={styles.btnBack}>
-                <Icon name='arrow-undo-circle' color={'#fff'} size={50} style={{ alignSelf: 'center', marginVertical: 'auto' }} />
-            </TouchableOpacity>
 
             <View style={{ marginVertical: 70 }}>
                 <Text style={[styles.text, { fontSize: 32, textAlign: 'center' }]}>Crie uma conta</Text>
