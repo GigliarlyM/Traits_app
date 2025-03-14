@@ -1,8 +1,11 @@
 import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconSimpleLine from 'react-native-vector-icons/SimpleLineIcons';
 
-import React, { useState } from 'react';
 import { Link } from 'expo-router';
 
 export default function RegisterScreen() {
@@ -22,36 +25,111 @@ export default function RegisterScreen() {
     )
 }
 
+function handleSignIn(data: any) {
+    console.log(data)
+}
+
+const schema = yup.object({
+    usuario: yup.string().required("Digite seu nome"),
+    email: yup.string().email("Email Inválido").required("Digite seu email"),
+    cpf: yup.string().required("Digite seu CPF").matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido (use o formato 000.000.000-00)"),
+    senha: yup.string().min(6, "A senha deve ter pelo menos 6 dígitos"),
+})
+
 const FormRegister = () => {
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+        mode: 'onChange',
+        defaultValues: {
+            usuario: "",
+            email: "",
+            cpf: "",
+            senha: ""
+        }
+    })
+
     return (
         <View >
+
             <Text style={styles.text}>Digite seu nome:</Text>
-            <TextInput
-                placeholder="Nome"
-                style={styles.input}
-                value={name}
-                onChangeText={setName} />
+            <Controller
+                control={control}
+                name='usuario'
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Nome"
+                        style={[styles.input, {
+                            borderWidth: errors.usuario && 1,
+                            borderColor: errors.usuario && '#ff375b'
+                        }]} 
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={onChange} />
+                )}
+            />
+            {errors.usuario && <text style={styles.labelError}>{errors.usuario?.message}</text>}
+
 
             <Text style={styles.text}>Email:</Text>
-            <TextInput
-                placeholder="example@example.com"
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail} />
+            <Controller
+                control={control}
+                name='email'
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="example@example.com"
+                        style={[styles.input, {
+                            borderWidth: errors.email && 1,
+                            borderColor: errors.email && '#ff375b'
+                        }]}
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={onChange} />
+                )}
+            />
+            {errors.email && <text style={styles.labelError}>{errors.email?.message}</text>}
+
+
+            <Text style={styles.text}>Cpf:</Text>
+            <Controller
+                control={control}
+                name='cpf'
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="***.***.***-**"
+                        style={[styles.input, {
+                            borderWidth: errors.cpf && 1,
+                            borderColor: errors.cpf && '#ff375b'
+                        }]}
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={onChange} />
+                )}
+            />
+            {errors.cpf && <text style={styles.labelError}>{errors.cpf?.message}</text>}
+
 
             <Text style={styles.text}>Senha:</Text>
-            <TextInput
-                placeholder="******"
-                secureTextEntry={true}
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword} />
+            <Controller
+                control={control}
+                name='senha'
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="******"
+                        style={[styles.input, {
+                            borderWidth: errors.senha && 1,
+                            borderColor: errors.senha && '#ff375b'
+                        }]}
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={onChange}
+                        secureTextEntry={true} />
+                )}
+            />
+            {errors.senha && <text style={styles.labelError}>{errors.senha?.message}</text>}
+
 
             <TouchableOpacity style={styles.btnLogin}>
-                <Text style={{ color: '#fff', textAlign: 'center' }}>Registrar</Text>
+                <Text style={{ color: '#fff', textAlign: 'center' }} onPress={handleSubmit(handleSignIn)}>Registrar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={[styles.btnLogin, { backgroundColor: '#ccc', flexDirection: 'row' }]}>
@@ -62,6 +140,7 @@ const FormRegister = () => {
             <Link href='/auth/login'>
                 <Text style={{ color: '#ccc', textAlign: 'center' }}>Já tem uma conta? Faça Login</Text>
             </Link>
+            
         </View>
     )
 }
@@ -90,5 +169,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 3,
         backgroundColor: '#fff',
+    },
+    labelError: {
+        alignSelf: 'flex-start',
+        color: '#ff375b',
+        marginBottom: 8
     }
 });
