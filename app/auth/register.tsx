@@ -34,6 +34,7 @@ const schema = yup.object({
     email: yup.string().email("Email Inválido").required("Digite seu email"),
     cpf: yup.string().required("Digite seu CPF").matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido (use o formato 000.000.000-00)"),
     senha: yup.string().min(6, "A senha deve ter pelo menos 6 dígitos"),
+    senhaRepetida: yup.string().oneOf([yup.ref("senha")], "As senhas devem ser iguais").required("Repita sua senha")
 })
 
 const FormRegister = () => {
@@ -127,6 +128,24 @@ const FormRegister = () => {
             />
             {errors.senha && <text style={styles.labelError}>{errors.senha?.message}</text>}
 
+            <Text style={styles.text}>Repita sua senha:</Text>
+            <Controller
+                control={control}
+                name='senhaRepetida'
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="******"
+                        style={[styles.input, {
+                            borderWidth: errors.senhaRepetida && 1,
+                            borderColor: errors.senhaRepetida && '#ff375b'
+                        }]}
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={onChange}
+                        secureTextEntry={true} />
+                )}
+            />
+            {errors.senhaRepetida && <text style={styles.labelError}>{errors.senhaRepetida?.message}</text>}
 
             <TouchableOpacity style={styles.btnLogin}>
                 <Text style={{ color: '#fff', textAlign: 'center' }} onPress={handleSubmit(handleSignIn)}>Registrar</Text>
