@@ -1,9 +1,8 @@
 import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
 
 import React, { useState } from 'react';
-import { Link } from 'expo-router';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
-import { Description } from '@/components/Description';
+import { Description } from '@/components/description';
 import { useCart } from '@/components/CartContext';
 
 export default function TabArtScreen() {
@@ -25,7 +24,6 @@ export default function TabArtScreen() {
 
   const fecharModal = () => {
     setModelVisivel(false)
-    setArteSelecionada(null)
   }
 
   const searchArts = (quantidade = 5) => {
