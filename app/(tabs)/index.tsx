@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
 import { Description } from '@/components/description';
 import { useCart } from '@/components/CartContext';
+import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
 
 export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
@@ -52,6 +53,15 @@ export default function TabArtScreen() {
     ));
   }
 
+  interface CategoriasProps {
+    name: String;
+    actived: boolean;
+  }
+
+  const categorias: CategoriasProps[] = [
+    { name: "Todas", actived: false }, { name: "Populares", actived: true }, { name: "Ofertas", actived: false }, { name: "Especiais", actived: false }
+  ]
+
   return (
     <ScrollView style={{ paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
 
@@ -59,9 +69,19 @@ export default function TabArtScreen() {
         <Text style={styles.titleText}>Selecione a categoria</Text>
 
         <ScrollView horizontal style={{ marginVertical: 20 }}>
-          <TouchableOpacity style={styles.btnOption}>
-            <Text>Todas</Text>
-          </TouchableOpacity>
+          <FlatList
+            data={categorias}
+            renderItem={
+              ({item}) => (
+                <TouchableOpacity
+                  onPress={() => item.actived = !item.actived}
+                  style={[styles.btnOption, item.actived && styles.btnOptionSelected]}
+                >
+                  <Text>{item.name}</Text>
+                </TouchableOpacity>
+              )
+            }
+          />
           <TouchableOpacity style={[styles.btnOption, styles.btnOptionSelected]}>
             <Text style={{ color: 'white' }}>Populares</Text>
           </TouchableOpacity>
