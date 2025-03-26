@@ -1,10 +1,10 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal, FlatList } from 'react-native';
 
-import React, { useState } from 'react';
+import React, { act, useState } from 'react';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
 import { Description } from '@/components/description';
 import { useCart } from '@/components/CartContext';
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
+
 
 export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
@@ -58,9 +58,25 @@ export default function TabArtScreen() {
     actived: boolean;
   }
 
-  const categorias: CategoriasProps[] = [
+  const [categorias, setCategorias] = useState<CategoriasProps[]>([
     { name: "Todas", actived: false }, { name: "Populares", actived: true }, { name: "Ofertas", actived: false }, { name: "Especiais", actived: false }
-  ]
+  ])
+
+  const alterCategoria = (item: CategoriasProps) => {
+    // categorias[item].actived
+    const list = categorias.map(categoriaSelected => {
+      if (categoriaSelected == item) {
+        let { name, actived } = categoriaSelected
+        actived = !actived
+
+        return { name, actived }
+      } else {
+        return categoriaSelected
+      }
+    })
+
+    setCategorias(list)
+  }
 
   return (
     <ScrollView style={{ paddingHorizontal: 18, backgroundColor: '#1a4a90' }}>
@@ -68,30 +84,19 @@ export default function TabArtScreen() {
       <View>
         <Text style={styles.titleText}>Selecione a categoria</Text>
 
-        <ScrollView horizontal style={{ marginVertical: 20 }}>
-          <FlatList
-            data={categorias}
-            renderItem={
-              ({item}) => (
-                <TouchableOpacity
-                  onPress={() => item.actived = !item.actived}
-                  style={[styles.btnOption, item.actived && styles.btnOptionSelected]}
-                >
-                  <Text>{item.name}</Text>
-                </TouchableOpacity>
-              )
-            }
-          />
-          <TouchableOpacity style={[styles.btnOption, styles.btnOptionSelected]}>
-            <Text style={{ color: 'white' }}>Populares</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnOption}>
-            <Text>Ofertas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnOption}>
-            <Text>Especiais</Text>
-          </TouchableOpacity>
-        </ScrollView>
+        <FlatList
+          horizontal
+          style={{ marginVertical: 20 }}
+          data={categorias}
+          renderItem={(item) => (
+            <TouchableOpacity
+              onPress={() => alterCategoria(item.item)}
+              style={[styles.btnOption, item.item.actived && styles.btnOptionSelected]}
+            >
+              <Text style={item.item.actived && { color: "white" }}>{item.item.name}</Text>
+            </TouchableOpacity>
+          )}
+        />
       </View>
 
       <View>
