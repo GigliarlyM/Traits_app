@@ -9,6 +9,7 @@ import MenuHeader from '@/components/MenuHeader';
 import { PaperProvider } from 'react-native-paper';
 
 export default function TabLayout() {
+  // Direcionar o usuario para tela de login caso ele nao tenha a chave de autenticacao
 
   return (
     <CartProvider>
