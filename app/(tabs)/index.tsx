@@ -1,15 +1,18 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import React, { act, useState } from 'react';
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
-import { Description } from '@/components/description';
 import { useCart } from '@/components/CartContext';
+import { Description } from '@/components/Description';
+import React, { useEffect, useState } from 'react';
+
+import httpService from '../service/httpService';
 
 
 export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
   const [arteSelecionada, setArteSelecionada] = useState<ComponetArtProp | null>(null)
   const { addToCart } = useCart()
+  let arts = [];
 
   const handleAddToCart = () => {
     if (arteSelecionada) {
@@ -37,8 +40,13 @@ export default function TabArtScreen() {
       valueArt: index * 10 + 100, // Valor de compra do artigo, simulado
     }));
   }
+  arts = searchArts()
 
-  const arts = searchArts();
+  useEffect(() => {
+    httpService.get('/art').then(
+      response => console.log(response)
+    )
+  }, [])
 
   const convertListToView = () => {
     return arts.map((art) => (
@@ -108,7 +116,7 @@ export default function TabArtScreen() {
 
       <View>
         <Text style={styles.titleText}>Ofertas</Text>
-        <View style={styles.offerArt}>
+        <TouchableOpacity style={styles.offerArt}>
           <View style={{ alignSelf: 'center' }}>
             <Text>Desconto da semana</Text>
             <Text style={styles.textOff}>15% OFF</Text>
@@ -117,7 +125,7 @@ export default function TabArtScreen() {
             source={require('@/assets/images/gato_oculos.png')}
             style={{ width: 150, height: 150, alignSelf: 'center' }}
           />
-        </View>
+        </TouchableOpacity>
       </View>
 
       <Modal visible={modalVisivel} animationType="slide">
