@@ -1,13 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
-import { useCart } from './CartContext';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface ComponetArtProp {
-  title?: string;
+  id?: string;
+  title: string;
   image?: string;
   saled?: boolean;
-  valueArt?: number;
+  valueArt: number;
 }
 
 const ArtView: React.FC<ComponetArtProp & { onPress?: () => void }> = ({ title = 'Sem titulo', image, saled, valueArt, onPress }) => {

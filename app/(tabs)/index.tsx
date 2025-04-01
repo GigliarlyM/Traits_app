@@ -11,7 +11,7 @@ export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
   const [arteSelecionada, setArteSelecionada] = useState<ComponetArtProp | null>(null)
   const { addToCart } = useCart()
-  let arts = [];
+  const [arts, setArts] = useState<ComponetArtProp[] | null>(null);
 
   const handleAddToCart = () => {
     if (arteSelecionada) {
@@ -29,36 +29,22 @@ export default function TabArtScreen() {
     setModelVisivel(false)
   }
 
-  const searchArts = (quantidade = 5) => {
-    // Simulando a chamada à API
-    return Array(quantidade).fill(null).map((_, index) => ({
-      id: index + 1,
-      title: `Art ${index + 1}`,
-      image: '@/assets/images/gato_com_oculos_perfil.avif',
-      saled: index % 2 === 0,
-      valueArt: index * 10 + 100, // Valor de compra do artigo, simulado
-    }));
+  const searchArts = async (quantidade = 5) => {
+    const arts = await httpService.get('/art')
+
+    setArts(arts.artes.map((art: any) => {
+      return {
+        id: art.id,
+        title: art.titulo,
+        image: art.imagem,
+        valueArt: art.valor
+      }
+    }))
   }
-  arts = searchArts()
 
   useEffect(() => {
-    httpService.get('/art').then(
-      response => console.log(response)
-    )
+    searchArts()
   }, [])
-
-  const convertListToView = () => {
-    return arts.map((art) => (
-      <ArtView
-        key={art.id}
-        title={art.title}
-        image={art.image}
-        saled={art.saled}
-        valueArt={art.valueArt}
-        onPress={() => abrirModal(art)}
-      />
-    ));
-  }
 
   interface CategoriasProps {
     name: String;
@@ -66,7 +52,10 @@ export default function TabArtScreen() {
   }
 
   const [categorias, setCategorias] = useState<CategoriasProps[]>([
-    { name: "Todas", actived: false }, { name: "Populares", actived: true }, { name: "Ofertas", actived: false }, { name: "Especiais", actived: false }
+    { name: "Todas", actived: false },
+    { name: "Populares", actived: true },
+    { name: "Ofertas", actived: false },
+    { name: "Especiais", actived: false }
   ])
 
   const alterCategoria = (item: CategoriasProps) => {
@@ -108,9 +97,20 @@ export default function TabArtScreen() {
 
       <View>
         <Text style={styles.titleText}>Populares</Text>
-        <ScrollView horizontal>
-          {convertListToView()}
-        </ScrollView>
+        <FlatList
+          horizontal
+          data={arts}
+          renderItem={ ({item}) => (
+            <ArtView
+              key={item.id}
+              title={item.title}
+              image={item.image}
+              saled={item.saled}
+              valueArt={item.valueArt}
+              onPress={() => abrirModal(item)}
+            />)
+          }
+        />
       </View>
 
       <View>
