@@ -6,9 +6,9 @@ export default function TabLayout() {
   return (
 
     <Stack>
-      <Stack.Screen name='index' options={{ headerShown: false }} />
-      <Stack.Screen name="chatIa" options={{ headerShown: false }} />
-      <Stack.Screen name="chat" options={{ headerShown: false }} />
+      <Stack.Screen name='index' options={{ headerShown: true, headerTitle: "Chat" }} />
+      <Stack.Screen name='chatIa' options={{ headerShown: false }} />
+      <Stack.Screen name='chat' options={{ headerShown: false }} />
     </Stack>
 
   );
