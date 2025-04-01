@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 
 import httpService from '../service/httpService';
 
-
 export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
   const [arteSelecionada, setArteSelecionada] = useState<ComponetArtProp | null>(null)
