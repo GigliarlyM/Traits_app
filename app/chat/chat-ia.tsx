@@ -22,7 +22,7 @@ export default function ChatIa() {
     setMessages([
       {
         _id: 1,
-        text: 'Hello developer',
+        text: 'Olá! Aqui você poderá conversar com a Ia gemini sobre qualquer dúvida que tem sobre o seu produto. Para finalizar a conversa, digite "fim".',
         createdAt: new Date(),
         user: {
           _id: 2,
