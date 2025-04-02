@@ -32,7 +32,7 @@ const FormLogin = () => {
       if (response) {
         // se possivel, fazer uma requisicao para pegar o nome do ser humano
         addAuth(response.token, '')
-        route.push('/tabs')
+        route.push('/(tabs)')
       }
     } catch (error) {
       console.error(error)
