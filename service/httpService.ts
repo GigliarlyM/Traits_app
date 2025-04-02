@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const uri = `http://192.168.0.4:8080`
+const uri = `http://127.0.0.1:8080`
 const api = axios.create({
   baseURL: uri,
   headers: {
@@ -22,7 +22,12 @@ const get = async (rec: string) => {
 
 async function post(rec: string, content: {}) {
   try {
-    const response = await api.post(rec, content, { headers: { 'Content-Type': 'application/json' } })
+    const response = await api.post(rec, content,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        method: "POST"
+      }
+    )
     console.log(response.data)
     return response.data
   } catch (err) {

@@ -27,8 +27,8 @@ const FormLogin = () => {
 
   const confirmAuth = async () => {
     try {
-      const response = await httpService.post('/login', { email, password })
-      console.log(response)
+      const response = await httpService.post('/login', { email, senha: password })
+      
       if (response) {
         // se possivel, fazer uma requisicao para pegar o nome do ser humano
         addAuth(response.token, '')
