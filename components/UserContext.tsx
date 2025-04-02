@@ -1,17 +1,28 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface UserProps {
-    auth: String | null;
+    name: string | null;
+    auth: string | null;
+    addAuth: (auth: string, name: string) => void;
     removeAuth: () => void;
-    addAuth: (auth: String) => void;
+    addName: (name: string) => void;
+    removeName: () => void;
 }
 
 const UserContext = createContext<UserProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [auth, setAuth] = useState<String | null>(null);
+    const [auth, setAuth] = useState<string | null>(null);
+    const [name, setName] = useState<string | null>(null);
 
-    const addAuth = (auth: String) => {
+    const addName = (name:string)=>{
+        setName(name)
+    }
+    const removeName = ()=>{
+        setName(null)
+    }
+
+    const addAuth = (auth: string, name: string) => {
         setAuth(auth)
     }
 
@@ -19,10 +30,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setAuth(null)
     }
 
-    const value = { auth, removeAuth, addAuth }
+    const value: UserProps = { name, auth, addAuth, removeAuth, addName, removeName }
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
+
+
 
 export const useAuth = () => {
     const context = useContext(UserContext)

@@ -1,8 +1,9 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import React, { useState } from 'react';
+import { useAuth } from '@/components/UserContext';
 import { Link, useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import httpService from '@/service/httpService';
 
 export default function LoginScreen() {
   return (
@@ -22,6 +23,22 @@ const FormLogin = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const route = useRouter()
+  const { addAuth } = useAuth()
+
+  const confirmAuth = async () => {
+    try {
+      const response = await httpService.post('/login', { email, password })
+      console.log(response)
+      if (response) {
+        // se possivel, fazer uma requisicao para pegar o nome do ser humano
+        addAuth(response.token, '')
+        route.push('/tabs')
+      }
+    } catch (error) {
+      console.error(error)
+      alert('Ocorreu um erro ao tentar realizar o login. Tente novamente.')
+    }
+  }
 
   return (
     <View >
@@ -42,7 +59,7 @@ const FormLogin = () => {
 
       <Text style={{ color: '#ccc', textAlign: 'right' }}>Esqueci a senha!</Text>
 
-      <TouchableOpacity style={styles.btnLogin} onPress={() => route.replace('/(tabs)')}>
+      <TouchableOpacity style={styles.btnLogin} onPress={() => confirmAuth()}>
         <Text style={{ color: '#fff', textAlign: 'center' }}>Login</Text>
       </TouchableOpacity>
 

@@ -5,6 +5,8 @@ import * as yup from 'yup'
 import { cpf } from 'cpf-cnpj-validator'
 
 import { Link, useRouter } from 'expo-router';
+import httpService from '@/service/httpService';
+import { useAuth } from '@/components/UserContext';
 
 export default function RegisterScreen() {
     return (
@@ -20,9 +22,19 @@ export default function RegisterScreen() {
     )
 }
 
-function handleSignIn(data: any) {
-    console.log(data)
-    useRouter().replace('/auth/login')
+async function handleSignIn(data: any) {
+    const {email, senha, usuario} = data
+    console.log(email, senha, usuario)
+    const response = await httpService.post('/client', {
+        nome: usuario,
+        email: email,
+        senha: senha
+    })
+    console.log(response.status)
+    if (response.status == 201) {
+        useAuth().addName(usuario)
+        useRouter().replace('/auth/login')
+    }
 }
 
 const schema = yup.object({

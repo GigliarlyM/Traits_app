@@ -5,7 +5,7 @@ import { useCart } from '@/components/CartContext';
 import { Description } from '@/components/Description';
 import React, { useEffect, useState } from 'react';
 
-import httpService from '../service/httpService';
+import httpService from '@/service/httpService';
 
 export default function TabArtScreen() {
   const [modalVisivel, setModelVisivel] = useState(false)
@@ -32,14 +32,16 @@ export default function TabArtScreen() {
   const searchArts = async (quantidade = 5) => {
     const arts = await httpService.get('/art')
 
-    setArts(arts.artes.map((art: any) => {
-      return {
-        id: art.id,
-        title: art.titulo,
-        image: art.imagem,
-        valueArt: art.valor
-      }
-    }))
+    if (arts.artes) {
+      setArts(arts.artes.map((art: any) => {
+        return {
+          id: art.id,
+          title: art.titulo,
+          image: art.imagem,
+          valueArt: art.valor
+        }
+      }))
+    }
   }
 
   useEffect(() => {
@@ -97,20 +99,22 @@ export default function TabArtScreen() {
 
       <View>
         <Text style={styles.titleText}>Populares</Text>
-        <FlatList
-          horizontal
-          data={arts}
-          renderItem={ ({item}) => (
-            <ArtView
-              key={item.id}
-              title={item.title}
-              image={item.image}
-              saled={item.saled}
-              valueArt={item.valueArt}
-              onPress={() => abrirModal(item)}
-            />)
-          }
-        />
+        {arts &&
+          <FlatList
+            horizontal
+            data={arts}
+            renderItem={({ item }) => (
+              <ArtView
+                key={item.id}
+                title={item.title}
+                image={item.image}
+                saled={item.saled}
+                valueArt={item.valueArt}
+                onPress={() => abrirModal(item)}
+              />)
+            }
+          />
+        }
       </View>
 
       <View>

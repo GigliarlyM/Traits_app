@@ -26,6 +26,7 @@ const MenuHeader = () => {
       }
     >
       <Menu.Item title={<Text>Perfil</Text>} />
+      <Menu.Item onPress={() => router.replace(`/chat`)} title={<Text>Chat</Text>} />
       <Menu.Item title={<Text>Configuracoes</Text>} />
       <Divider/>
       <Menu.Item onPress={() => router.replace('/auth/login')} title={<Text>Logout</Text>} />
