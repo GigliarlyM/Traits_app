@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const uri = `http://127.0.0.1:8080`
+const uri = `http://192.168.0.4:8080`
 const api = axios.create({
   baseURL: uri,
   headers: {
@@ -15,7 +15,7 @@ const get = async (rec: string) => {
     console.log(response.data)
     return response.data
   } catch (err) {
-    console.error("Error fetching data: ", err)
+    console.error("Ocorreu um erro com o a requisicao ao server")
     return []
   }
 }

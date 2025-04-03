@@ -1,3 +1,4 @@
+// Notei que para testar no browser devemos usar o WebSocket nativo
 import WebSocket from 'ws'
 
 interface ChatMessage {
@@ -25,13 +26,15 @@ export const getConnection = () => {
 }
 
 export const receiveMessage = () => {
-
+    let data: ChatMessage | null = null
     if (newSocket) {
         newSocket.onmessage = (event: any) => {
             console.log('Messagem recebida: ', event.data)
-            return event.data
+            data = event.data
         }
     }
+    
+    return data
 }
 
 export const sendMessage = (message: ChatMessage) => {

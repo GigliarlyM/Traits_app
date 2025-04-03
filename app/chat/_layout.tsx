@@ -4,7 +4,6 @@ import React from 'react';
 
 export default function TabLayout() {
   return (
-
     <Stack>
       <Stack.Screen name='index'
         options={{
@@ -14,21 +13,19 @@ export default function TabLayout() {
           headerStyle: { backgroundColor: '#1a4a90' },
           contentStyle: { backgroundColor: '#1a4a90' }
         }} />
-      <Stack.Screen name='chat-ia' options={{
+      <Stack.Screen name='ia' options={{
         headerShown: true,
-        headerTitle: "ChatIa",
+        headerTitle: "chat com ia",
         headerTitleStyle: { color: 'white' },
         headerStyle: { backgroundColor: '#1a4a90' },
         contentStyle: { backgroundColor: '#1a4a90' }
       }} />
-      <Stack.Screen name='chat-normal' options={{
-        headerShown: true,
+      <Stack.Screen name='normal' options={{
         headerTitle: "Um doido ae",
         headerTitleStyle: { color: 'white' },
         headerStyle: { backgroundColor: '#1a4a90' },
         contentStyle: { backgroundColor: '#1a4a90' }
       }} />
     </Stack>
-
   );
 }
