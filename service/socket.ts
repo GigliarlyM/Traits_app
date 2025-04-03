@@ -1,7 +1,7 @@
 // Notei que para testar no browser devemos usar o WebSocket nativo
 import WebSocket from 'ws'
 
-interface ChatMessage {
+export interface ChatMessage {
     type: 'message' | 'error' | 'join' | 'leave';
     user: string;
     message: string;

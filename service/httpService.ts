@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 const uri = `http://192.168.0.4:8080`
 const api = axios.create({
@@ -15,7 +15,7 @@ const get = async (rec: string) => {
     console.log(response.data)
     return response.data
   } catch (err) {
-    console.error("Ocorreu um erro com o a requisicao ao server")
+    console.error("Ocorreu um erro com o a requisicao ao server ", uri)
     return []
   }
 }
@@ -31,7 +31,8 @@ async function post(rec: string, content: {}) {
     console.log(response.data)
     return response.data
   } catch (err) {
-    console.error("Error posting data: ", err)
+    // console.error("Error posting data: ", (err as AxiosError), uri)
+    console.error((err as AxiosError))
     return null
   }
 }

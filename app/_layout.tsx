@@ -32,7 +32,7 @@ export default function RootLayout() {
         <PaperProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name='chat' options={{ headerShown: false }} />
+            <Stack.Screen name='chat' options={{ headerShown: true }} />
             <Stack.Screen name='auth' options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>

@@ -29,7 +29,7 @@ const FormLogin = () => {
     try {
       const response = await httpService.post('/login', { email, senha: password })
       
-      if (response) {
+      if (response.token) {
         // se possivel, fazer uma requisicao para pegar o nome do ser humano
         addAuth(response.token, '')
         route.push('/(tabs)')
