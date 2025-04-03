@@ -11,7 +11,7 @@ export default function ChatHomeScreen() {
     <ScrollView style={{ marginHorizontal: 10, marginTop: 5 }}>
       <Text style={style.link} onPress={() => router.navigate('/(tabs)')}>Ir pra home</Text>
       <Text style={style.link} onPress={() => router.push('/chat/normal')}>Conversar no chat</Text>
-      <Text style={style.link} onPress={() => router.push('/chat/ia')}>Conversar com ia</Text>
+      <Text style={style.link} onPress={() => router.push('/chat/chatIa')}>Conversar com ia</Text>
       <View style={style.containerSend}>
         <TextInput
           style={style.input}
