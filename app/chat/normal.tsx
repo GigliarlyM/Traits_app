@@ -1,61 +1,108 @@
 import { useAuth } from "@/components/UserContext";
-import { ChatMessage } from "@/service/socket";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
+interface ChatMessage {
+  type: 'message' | 'error' | 'join' | 'leave';
+  user: string;
+  message: string;
+  to?: string;
+  timestamp?: Date;
+}
+
 export default function TabChatNormalScreen() {
-  let { name } = useAuth()
-  if (!name) {
-    name = "Sem nome"
-  }
+  let { name } = useAuth();
+  if (!name) name = "sem Nome"
   const [messages, setMessages] = useState<ChatMessage[]>([
     { message: "hello, World!", type: "join", user: name },
     { message: "hello", type: "message", user: "System" },
   ]);
   const [message, setMessage] = useState("");
+  const socketRef = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    const wsUrl = "ws://192.168.0.4:8080/chat";
+    socketRef.current = new WebSocket(wsUrl);
+
+    socketRef.current.onopen = () => {
+      console.log("Conexão estabelecida!!");
+      const joinMsg: ChatMessage = {
+        message: "Entrou no chat",
+        type: "join",
+        user: name,
+      };
+      socketRef.current?.send(JSON.stringify(joinMsg));
+    };
+
+    socketRef.current.onmessage = (e) => {
+      const newMessage = JSON.parse(e.data) as ChatMessage;
+      setMessages(prev => [...prev, newMessage]);
+    };
+
+    socketRef.current.onerror = (e) => {
+      console.error("Erro no WebSocket:", e);
+    };
+
+    socketRef.current.onclose = (e) => {
+      console.log("Conexão fechada:", e.reason);
+    };
+
+    return () => {
+      if (socketRef.current?.readyState === WebSocket.OPEN) {
+        socketRef.current.close();
+      }
+    };
+  }, [name]);
 
   const onSendMessage = () => {
+    if (!message.trim()) return;
+
     const msg: ChatMessage = {
       message,
       type: "message",
       user: name,
+    };
+
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(msg));
+      setMessage("");
+    } else {
+      console.error("WebSocket não está conectado");
     }
-    setMessages([...messages, msg])
-    setMessage("")
-  }
+  };
 
   return (
     <>
       <FlatList
         style={style.containerMessages}
         data={messages}
-        renderItem={({ item }) =>
-          <MessageView item={item} name={name} />
-        }
+        renderItem={({ item }) => <MessageView item={item} name={name} />}
+        keyExtractor={(item, index) => index.toString()}
       />
       <View style={style.containerSend}>
         <TextInput
           style={style.input}
-          placeholder="Nome de quem quer conversar"
+          placeholder="Digite sua mensagem"
           value={message}
-          onChangeText={(value) => setMessage(value)}
+          onChangeText={setMessage}
+          onSubmitEditing={onSendMessage}
         />
-        <TouchableOpacity style={style.btnSend}>
+        <TouchableOpacity style={style.btnSend} onPress={onSendMessage}>
           <Icon
-            onPress={onSendMessage}
             name="send"
             style={{ marginVertical: "auto" }}
             size={30}
-            color={'white'} />
+            color={'white'}
+          />
         </TouchableOpacity>
       </View>
     </>
-  )
+  );
 }
 
 const MessageView: React.FC<{ item: ChatMessage, name: string }> = ({ item, name }) => (
-  <View style={[{paddingVertical: 5}, name == item.user ? { flexDirection: "row-reverse" } : { flexDirection: 'row' }]}>
+  <View style={[{ paddingVertical: 5 }, name == item.user ? { flexDirection: "row-reverse" } : { flexDirection: 'row' }]}>
     <View style={[style.msg, (name == item.user) ? style.msgMy : style.msgOuther]}>
       {(name == item.user) ?
         <><Text>{item.user}: </Text>
@@ -83,7 +130,7 @@ const style = StyleSheet.create({
   },
   containerMessages: {
     flex: 1,
-    marginBottom: 100,
+    marginBottom: 70,
     padding: 10,
     backgroundColor: '#eee',
   },
