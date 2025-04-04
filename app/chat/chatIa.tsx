@@ -1,17 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
-
-// Interface
-interface IMessage {
-    _id: number,
-    text: string,
-    createdAt: Date,
-    user: {
-        _id: number,
-        name: string,
-        avatar: string,
-    }
-}
+import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 
 export default function ChatIa() {
   // Onde armazena a mensagem
