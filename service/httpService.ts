@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios"
+import axios, { AxiosBasicCredentials, AxiosError } from "axios"
 
 const uri = `http://192.168.0.4:8080`
 const api = axios.create({
@@ -37,4 +37,24 @@ async function post(rec: string, content: {}) {
   }
 }
 
-export default { get, post }
+async function postWithAuth(rec: string, content: {}, auth: string) {
+  try {
+    const response = await api.post(rec, content,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${auth}`,
+        },
+        method: "POST",
+      }
+    )
+    console.log(response.data)
+    return response.data
+  } catch (err) {
+    // console.error("Error posting data: ", (err as AxiosError), uri)
+    console.error((err as AxiosError))
+    return null
+  }
+}
+
+export default { get, post, postWithAuth }

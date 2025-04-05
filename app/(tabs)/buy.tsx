@@ -1,19 +1,42 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import React, { useState } from 'react';
-import { useCart } from '@/components/CartContext';
 import { ComponetArtProp } from '@/components/ArtView';
+import { useCart } from '@/components/CartContext';
 import FinishView from '@/components/Finish';
+import { useAuth } from '@/components/UserContext';
+import httpService from '@/service/httpService';
+import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 export default function TabBuyScreen() {
   const { cart, removeFromCart, removeAllFromCart } = useCart()
   const total = getTotal(cart)
   const [modalVisivel, setModelVisivel] = useState(false)
+  const { email, auth } = useAuth()
+  const route = useRouter()
 
-  const abrirModal = () => {
-    removeAllFromCart()
-    setModelVisivel(true)
+  const abrirModal = async () => {
+    const next = await registerPayment()
+    if (next != null) {
+      removeAllFromCart()
+      setModelVisivel(true)
+    }
+  }
+
+  const registerPayment = async () => {
+    const listIdItems = cart.map(item => item.id)
+    if (email == null || auth == null) {
+      route.push('/auth/login')
+    }
+
+    const result = await httpService.postWithAuth('/payment', {
+      items: listIdItems,
+      formaPagamento: "PIX",
+      cliente: email
+    }, (auth as string))
+
+    return result
   }
 
   const fecharModal = () => {

@@ -1,4 +1,5 @@
 import { useAuth } from "@/components/UserContext";
+import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -13,13 +14,16 @@ interface ChatMessage {
 
 export default function TabChatNormalScreen() {
   let { name } = useAuth();
+  console.log(name)
   if (!name) name = "sem Nome"
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     { message: "hello, World!", type: "join", user: name },
     { message: "hello", type: "message", user: "System" },
   ]);
   const [message, setMessage] = useState("");
   const socketRef = useRef<WebSocket | null>(null);
+  const { nameTo } = useLocalSearchParams()
 
   useEffect(() => {
     const wsUrl = "ws://192.168.0.4:8080/chat";
@@ -62,6 +66,7 @@ export default function TabChatNormalScreen() {
       message,
       type: "message",
       user: name,
+      to: nameTo ? (nameTo as string) : undefined
     };
 
     if (socketRef.current?.readyState === WebSocket.OPEN) {
@@ -74,6 +79,7 @@ export default function TabChatNormalScreen() {
 
   return (
     <>
+      <Text>{nameTo? nameTo : "Geral"}</Text>
       <FlatList
         style={style.containerMessages}
         data={messages}
@@ -140,7 +146,6 @@ const style = StyleSheet.create({
     borderRadius: 10,
   },
   containerSend: {
-    display: "flex",
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'center',

@@ -1,10 +1,13 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface UserProps {
+    email: string | null;
     name: string | null;
     auth: string | null;
-    addAuth: (auth: string, name: string) => void;
+    addAuth: (auth: string) => void;
     removeAuth: () => void;
+    addEmail: (email: string) => void;
+    removeEmail: () => void;
     addName: (name: string) => void;
     removeName: () => void;
 }
@@ -14,15 +17,22 @@ const UserContext = createContext<UserProps | undefined>(undefined);
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [auth, setAuth] = useState<string | null>(null);
     const [name, setName] = useState<string | null>(null);
+    const [email, setEmail] = useState<string | null>(null);
 
-    const addName = (name:string)=>{
+    const addName = (name: string) => {
         setName(name)
     }
-    const removeName = ()=>{
+    const removeName = () => {
         setName(null)
     }
+    const addEmail = (email: string) => {
+        setEmail(email)
+    }
+    const removeEmail = () => {
+        setEmail(null)
+    }
 
-    const addAuth = (auth: string, name: string) => {
+    const addAuth = (auth: string) => {
         setAuth(auth)
     }
 
@@ -30,7 +40,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setAuth(null)
     }
 
-    const value: UserProps = { name, auth, addAuth, removeAuth, addName, removeName }
+    const value: UserProps = { email, name, auth, addAuth, removeAuth, addEmail, removeEmail, addName, removeName }
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

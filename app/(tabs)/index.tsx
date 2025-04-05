@@ -35,7 +35,7 @@ export default function TabArtScreen() {
     if (arts.artes) {
       setArts(arts.artes.map((art: any) => {
         return {
-          id: art.id,
+          id: art._id,
           title: art.titulo,
           image: art.imagem,
           valueArt: art.valor

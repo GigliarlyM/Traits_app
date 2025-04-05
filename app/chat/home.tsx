@@ -7,6 +7,12 @@ export default function ChatHomeScreen() {
   const [name, setName] = useState<string>()
   const router = useRouter()
 
+  const sendSingleChat = () => {
+    if (name) {
+      router.push({ pathname: '/chat/normal', params: { nameTo: name } })
+    }
+  }
+
   return (
     <ScrollView style={{ marginHorizontal: 10, marginTop: 5 }}>
       <Text style={style.link} onPress={() => router.navigate('/(tabs)')}>Ir pra home</Text>
@@ -19,8 +25,8 @@ export default function ChatHomeScreen() {
           value={name}
           onChangeText={(value) => setName(value)}
         />
-        <TouchableOpacity style={{paddingHorizontal: 10}}>
-          <Icon name="send" style={{marginVertical: "auto"}} size={30} color={'white'} />
+        <TouchableOpacity onPress={sendSingleChat} style={{ paddingHorizontal: 10 }}>
+          <Icon name="send" style={{ marginVertical: "auto" }} size={30} color={'white'} />
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -29,9 +35,7 @@ export default function ChatHomeScreen() {
 
 const style = StyleSheet.create({
   containerSend: {
-    display: "flex",
     flexDirection: 'row',
-    width: '100%',
     alignContent: 'center',
     justifyContent: 'center',
   },
@@ -46,7 +50,7 @@ const style = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
-    width: '100%',
+    width: '90%',
     borderRadius: 10,
     paddingVertical: 15,
     paddingHorizontal: 10

@@ -23,7 +23,7 @@ const FormLogin = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const route = useRouter()
-  const { addAuth } = useAuth()
+  const { addAuth, addName, addEmail } = useAuth()
 
   const confirmAuth = async () => {
     try {
@@ -31,7 +31,9 @@ const FormLogin = () => {
       
       if (response.token) {
         // se possivel, fazer uma requisicao para pegar o nome do ser humano
-        addAuth(response.token, '')
+        addAuth(response.token)
+        addEmail(response.email)
+        addName(response.name)
         route.push('/(tabs)')
       }
     } catch (error) {
