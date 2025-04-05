@@ -57,4 +57,23 @@ async function postWithAuth(rec: string, content: {}, auth: string) {
   }
 }
 
-export default { get, post, postWithAuth }
+async function getWithAuth(rec: string, auth: string) {
+  try {
+    const response = await api.get(rec, {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      }
+    })
+    console.log(response.data)
+    return response.data
+  } catch (err) {
+    if ((err as AxiosError).message.indexOf("404") != -1) {
+      console.error("Recurso nao encontrado")
+    } else {
+      console.error((err as AxiosError).message)
+    }
+    return null
+  }
+}
+
+export default { get, post, postWithAuth, getWithAuth }
