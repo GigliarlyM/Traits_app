@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 
-export default async function ChatIa() {
+export default function ChatIa() {
   const [messages, setMessages] = useState<IMessage[]>([])
   const [chatAtivo, setChatAtivo] = useState(true)
+  const socketRef = useRef<WebSocket | null>(null)
+  const userId = useRef(Math.random().toString(36).substring(2, 9)).current
 
   useEffect(() => {
     setMessages([
@@ -18,7 +20,57 @@ export default async function ChatIa() {
         },
       },
     ])
-  }, [])
+  
+
+  // Fazer a conexão se pa
+  const wsUrl =  "ws://192.168.0.9:8080/chat"
+  socketRef.current = new WebSocket(wsUrl)
+
+  socketRef.current.onopen = () => {
+    console.log("Conectado ao WebSocket")
+
+    socketRef.current?.send(
+      JSON.stringify({
+        type: 'join',
+        user: userId,
+        message: 'Entrou no chat com IA',
+        to: 'chat-ia',
+      })
+    )
+  }
+
+  socketRef.current.onmessage = (e) => {
+    const received = JSON.parse(e.data)
+
+    const newMessage: IMessage = {
+      _id: Math.random(),
+      text: received.message,
+      createdAt: received.timestamp ? new Date(received.timestamp) : new Date(),
+      user: {
+        _id: received.user === 'AI' || received.user === 'chat-ia' ? 2 : 1,
+        name: received.user,
+        avatar: received.user === 'AI' ? 'https://placeimg.com/140/140/any' : undefined,
+      },
+    }
+
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]))
+  }
+
+  socketRef.current.onerror = (e) => {
+    console.error("Erro no WebSocket", e)
+  }
+
+  socketRef.current.onclose = () => {
+    console.log("WebSocket desconectado")
+  }
+
+  return () => {
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.close()
+    }
+  }
+}, [])
+
 
   // Callback quando estiver enviando a mensagem
   const onSend = useCallback(async (messages: IMessage[] | null) => {
@@ -31,7 +83,7 @@ export default async function ChatIa() {
     // Aqui é por conta que o usuário sempre vai começar sem digitar nada
     const userMessage = messages[0];
   
-    // Validação se o usuário digitou fim ou não
+    // Validação se o usuário digitou fim
     if (userMessage.text.toLowerCase() === "fim") {
       setChatAtivo(false); 
       const botMessage: IMessage = {
@@ -49,27 +101,18 @@ export default async function ChatIa() {
       );
       return;
     }
-  
-    // O usuário não digitou fim
-    try {
-      const responseText = await startChat(userMessage.text);
-      const botMessage: IMessage = {
-        _id: Math.random(),
-        text: responseText ?? "Não entendi sua pergunta.",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "Gemini IA",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      };
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, [botMessage])
-      );
-    } catch (error) {
-      console.error("Erro ao obter resposta da IA:", error);
-    }
-  }, [chatAtivo]);
+    
+    // Nova forma de método quando o usuário ainda não digitou "fim", o mesmo previne repetição
+    socketRef.current?.send(
+      JSON.stringify({
+        type: 'message',
+        user: userId,
+        message: userMessage.text,
+        to: 'chat-ia'
+      })
+    )
+
+  }, [chatAtivo, userId]);
 
   return (
     <GiftedChat
