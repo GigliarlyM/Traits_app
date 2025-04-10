@@ -61,7 +61,9 @@ export default function ChatIa() {
         },
       }
 
-      setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]))
+      if (newMessage.user.name != "System"){
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMessage]))
+      }
     }
 
     socketRef.current.onerror = (e) => {

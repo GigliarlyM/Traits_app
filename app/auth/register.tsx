@@ -23,16 +23,17 @@ export default function RegisterScreen() {
 }
 
 async function handleSignIn(data: any) {
+    const router = useRouter()
+
     const { email, senha, usuario } = data
-    const response = await httpService.post('/client', {
+    await httpService.post('/client', {
         nome: usuario,
         email: email,
         senha: senha
     })
 
-    console.log("Requisicao recevida")
     useAuth().addName(usuario)
-    useRouter().replace('/auth/login')
+    router.replace('/auth/login')
 }
 
 const schema = yup.object({

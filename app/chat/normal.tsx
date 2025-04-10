@@ -6,20 +6,16 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 interface ChatMessage {
   type: 'message' | 'error' | 'join' | 'leave';
-  user: string;
+  user?: string | null;
   message: string;
   to?: string;
   timestamp?: Date;
 }
 
 export default function TabChatNormalScreen() {
-  let { name } = useAuth();
-  if (!name) name = "sem Nome"
+  let { name, addName } = useAuth();
 
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { message: "hello, World!", type: "join", user: name },
-    { message: "hello", type: "message", user: "System" },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState("");
   const socketRef = useRef<WebSocket | null>(null);
   const { nameTo } = useLocalSearchParams()
@@ -30,16 +26,27 @@ export default function TabChatNormalScreen() {
 
     socketRef.current.onopen = () => {
       console.log("Conexão estabelecida!!");
-      const joinMsg: ChatMessage = {
-        message: "Entrou no chat",
-        type: "join",
-        user: name,
-      };
-      socketRef.current?.send(JSON.stringify(joinMsg));
+      if (name != null) {
+        const joinMsg: ChatMessage = {
+          message: "Entrou no chat",
+          type: "join",
+          user: name,
+        };
+        socketRef.current?.send(JSON.stringify(joinMsg));
+      } else {
+        const joinMsg: ChatMessage = {
+          message: "Entrou no chat",
+          type: "join",
+        };
+        socketRef.current?.send(JSON.stringify(joinMsg));
+      }
     };
 
     socketRef.current.onmessage = (e) => {
       const newMessage = JSON.parse(e.data) as ChatMessage;
+      if (name == null || name == undefined) {
+        addName(newMessage.message.split(" ")[1])
+      }
       setMessages(prev => [...prev, newMessage]);
     };
 
@@ -78,11 +85,17 @@ export default function TabChatNormalScreen() {
 
   return (
     <>
-      <Text style={{color: `white`, fontSize: 20}}>{nameTo? nameTo : "Geral"}</Text>
+      <Text style={{ color: `white`, fontSize: 20 }}>{nameTo ? nameTo : "Geral"}</Text>
       <FlatList
         style={style.containerMessages}
         data={messages}
-        renderItem={({ item }) => <MessageView item={item} name={name} />}
+        renderItem={({ item }) => {
+          if (item.user != 'System'){
+            return (<MessageView item={item} name={name} />)
+          } else {
+            return null
+          }
+        }}
         keyExtractor={(item, index) => index.toString()}
       />
       <View style={style.containerSend}>
@@ -106,7 +119,8 @@ export default function TabChatNormalScreen() {
   );
 }
 
-const MessageView: React.FC<{ item: ChatMessage, name: string }> = ({ item, name }) => (
+const MessageView: React.FC<{ item: ChatMessage, name: string | null }> = ({ item, name }) => (
+
   <View style={[{ paddingVertical: 5 }, name == item.user ? { flexDirection: "row-reverse" } : { flexDirection: 'row' }]}>
     <View style={[style.msg, (name == item.user) ? style.msgMy : style.msgOuther]}>
       {(name == item.user) ?
