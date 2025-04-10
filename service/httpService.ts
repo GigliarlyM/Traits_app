@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 
-const uri = `http://10.5.3.228:8080`
+const uri = `http://192.168.0.4:8080`
 const api = axios.create({
   baseURL: uri,
   headers: {

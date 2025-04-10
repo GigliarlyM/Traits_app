@@ -21,7 +21,7 @@ export default function TabChatNormalScreen() {
   const { nameTo } = useLocalSearchParams()
 
   useEffect(() => {
-    const wsUrl = "ws://10.5.3.228:8080/chat";
+    const wsUrl = "ws://192.168.0.4:8080/chat";
     socketRef.current = new WebSocket(wsUrl);
 
     socketRef.current.onopen = () => {
