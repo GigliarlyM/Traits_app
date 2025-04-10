@@ -14,7 +14,6 @@ interface ChatMessage {
 
 export default function TabChatNormalScreen() {
   let { name } = useAuth();
-  console.log(name)
   if (!name) name = "sem Nome"
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -26,7 +25,7 @@ export default function TabChatNormalScreen() {
   const { nameTo } = useLocalSearchParams()
 
   useEffect(() => {
-    const wsUrl = "ws://192.168.0.4:8080/chat";
+    const wsUrl = "ws://10.5.3.228:8080/chat";
     socketRef.current = new WebSocket(wsUrl);
 
     socketRef.current.onopen = () => {
@@ -79,7 +78,7 @@ export default function TabChatNormalScreen() {
 
   return (
     <>
-      <Text>{nameTo? nameTo : "Geral"}</Text>
+      <Text style={{color: `white`, fontSize: 20}}>{nameTo? nameTo : "Geral"}</Text>
       <FlatList
         style={style.containerMessages}
         data={messages}

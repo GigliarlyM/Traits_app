@@ -31,7 +31,7 @@ export default function ChatIa() {
 
 
     // Fazer a conexão se pa
-    const wsUrl = "ws://192.168.0.9:8080/chat"
+    const wsUrl = "ws://10.5.3.228:8080/chat"
     socketRef.current = new WebSocket(wsUrl)
 
     socketRef.current.onopen = () => {

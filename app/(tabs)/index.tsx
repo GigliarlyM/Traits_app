@@ -2,7 +2,7 @@ import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity,
 
 import { ArtView, ComponetArtProp } from '@/components/ArtView';
 import { useCart } from '@/components/CartContext';
-import { Description } from '@/components/Description';
+import { Description } from '@/components/DescriptionComponent';
 import React, { useEffect, useState } from 'react';
 
 import httpService from '@/service/httpService';

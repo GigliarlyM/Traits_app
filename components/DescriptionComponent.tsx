@@ -1,11 +1,9 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import IconAnt from 'react-native-vector-icons/AntDesign';
-import IconMatiral from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconIon from 'react-native-vector-icons/Ionicons';
+import IconMatiral from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Link } from 'expo-router';
 import { ComponetArtProp } from './ArtView';
 
 interface ComponentPopUpProps {
